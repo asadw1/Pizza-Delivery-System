@@ -10,9 +10,18 @@
       </form>
 
 <?php 
+/* FORGOTPASSWORD.PHP
+
+- Main functionality to provide user with their password in a timely manner
+- Pre-pre alpha version 1.0
+- v1.1 updates: salting passwords, sending a reset link to user instead of a password
+- v1.2 updates: abandon SHA-1 and MD5 as they are insecure, try implementing PGP encryption for password recovery instead
+
+*/
 session_start();
-ini_set('display_errors', 'On'); 	// Comment out for live/release mode
-error_reporting(E_ALL);				// Comment out for live/release mode
+
+//ini_set('display_errors', 'On'); 	// Comment out for live/release mode
+//error_reporting(E_ALL);				// Comment out for live/release mode
 
 include "DBconnect.php"; //connects to the database
 
@@ -24,16 +33,13 @@ if (isset($_POST['username']))
 	$result = mysqli_query($connection, $query) or die(mysqli_error($connection));
 	$count=mysqli_num_rows($result);
 
-	// If the count is equal to one, we will send message other wise display an error message.
+	// If the counter is equal to one, we will send message other wise display an error message.
 	if($count==1)
 	{
 		$rows=mysqli_fetch_array($result);
 		$pass  =  $rows['sign_password']; 
 
-		//echo "your pass is ::".($pass)."";
 		$to = $rows['sign_email'];
-		//echo "your email is ::".$email;
-		//Details for sending E-mail
 		
 		$from = "Pizza Delivery";
 		$url = "http://www.csce4444.com/web";
@@ -56,11 +62,6 @@ if (isset($_POST['username']))
 	} 
 	else 
 	{
-		// if ($_POST ['sign_email'] != "") 
-		// {
-		//     $fmsg = "Not found your email in our database";
-		// }
-
 		var_dump($_POST ['email']);
 	}
 
@@ -68,14 +69,12 @@ if (isset($_POST['username']))
 	if($sentmail==1)
 	{
 		$smsg = "Your Password Has Been Sent To Your Email Address.";
-		
 	}
-		else
-		{
-			if($_POST['username']!="")
-			$nmsg = "Cannot send password to your e-mail address.Problem with sending mail...";
-			
-		}
+	else
+	{
+		if($_POST['username']!="")
+			$nmsg = "Cannot send password to your e-mail address. Problem with sending mail...please try again";	
+	}
 }
 
 ?>
