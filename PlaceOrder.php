@@ -1,9 +1,11 @@
 <?php
-	//Script that transfers the user's order from the cart to the kitchen table*/
+	// This code transfers the customer's order from the Cart table 
+	// to the In-Process Orders table for the C# backend system
 
 	session_start();
 	$name =$_SESSION ['login_user'];
 
+/* CONNECTION VARIABLES */
 $servername = "localhost";
 $username = "user_eg";
 $password = "13669618";
@@ -24,14 +26,16 @@ $currenttb1="TestOrder";
 $query=("insert into TestOrder (username, Method, Pizza, Toppings)
 select  username, Method,Pizza, Toppings from Cart where username="."'$name'");
 
-/*now needs to remove the records from the Cart table to avoid duplicates*/
+/* Now we need to remove the records from the Cart table to avoid duplicates*/
 $query2=("delete from Cart where username="."'$name'");
 
 $result = $db->query($query);
 $result2 = $db->query($query2);
 if($result && $result2)
-{   /*send the user to the final page of the website*/
+{   /*send the user to the final page of the website to complete the order */
 	header("location: final.php");
 }
+
+// Close DB access
 $db->close();
 ?>
