@@ -1,4 +1,6 @@
 <?php	
+// This script exclusively handles SESSION variable initialization
+// Meaning that this page is only accessible to the user when logged into the site
 
 	session_start();
 
@@ -239,6 +241,16 @@
 				<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
 
 <?php 
+
+/*
+*
+* Description: This PHP handles
+*
+*
+*
+*
+*
+*/
 //ini_set('display_errors', 'On'); 	// Comment out for live/release mode
 error_reporting(E_ALL);
 // Custom code to pull order data from DB and display price to user
@@ -246,8 +258,8 @@ $servername = "localhost";
 $username = "user_eg";
 $password = "13669618";
 $currentdb="Database_Project";
-
 $connection=  mysqli_connect('localhost', $username, $password, $currentdb ); 
+
 //check the connection
 if (mysqli_connect_errno())
 {
@@ -257,7 +269,7 @@ if (mysqli_connect_errno())
 
 $query = mysqli_query($connection, "SELECT * FROM Cart WHERE username = '$name' LIMIT 1");
 
-// Data structure mapping 8 of the necessary Pizza crust/type combinations to prices
+// Associative array mapping 8 of the necessary Pizza crust/type combinations to prices
 static $Types = array(
 
 "10OR" => 8.99,
@@ -270,8 +282,6 @@ static $Types = array(
 "14PN" => 12.99,
 );
 
-
-//$myData = mysqli_query($sql,$db);
 echo '<div class= "container">';
 echo"<table>
 	  <tr>
@@ -291,9 +301,11 @@ echo"<table>
 	    <th></th>
 	  </tr>";
 
-// Cost variable
+// Total Cost of the Pizza; will be updated below
 $cost =0;	  
+
 // Get row data from the mySQL 'Cart' table
+// We need to display to the front-end to ensure correct querying behavior from the Cart table
 while($row = mysqli_fetch_array($query))
 {
 	echo "<tr>";
@@ -309,10 +321,10 @@ while($row = mysqli_fetch_array($query))
 	$pizzaType = $row['Pizza']; 
 	$toppings = $row['Toppings'];
 
+	// Simple check, did we pull a long string with the last two columns concatenated? YES. 
 	echo $pizzaType . $toppings; // YES, this works
 
-	// Compute price of pizza
-
+	// Compute price of pizza and parse the order string from line 325
 	foreach($Types as $key => $value)
 	{
 		if($pizzaType === $key)
@@ -337,19 +349,7 @@ while($row = mysqli_fetch_array($query))
 echo "</table>";
 echo '</div>';
 
-
-
-
-//if($pizzaType === NULL){echo "Pizza type is empty";}
- //if($toppings === NULL) {echo "toppings is empty";}
-// DEBUG -- TEST ORDER STRING CONTENTS
-// echo "<div class=container>";
-// echo $pizzaType . $toppings; 
-// echo "</div>" ;
-
 mysqli_close($connection);
-
-
 
 ?>
 
