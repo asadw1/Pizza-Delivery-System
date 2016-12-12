@@ -1,6 +1,7 @@
 <?php	
 // This script exclusively handles SESSION variable initialization
 // Meaning that this page is only accessible to the user when logged into the site
+// FOR FULL CHECKOUT FUNCTIONALITY, SEE LINE 245
 
 	session_start();
 
@@ -244,12 +245,12 @@
 
 /*
 *
-* Description: This PHP handles
-*
-*
-*
-*
-*
+* Description: This PHP handles all checkout functionality once a user has picked: 
+* Delivery Method
+* Pizza size
+* Crust type
+* Toppings
+* Clicked 'Submit' on previous javascript form
 */
 //ini_set('display_errors', 'On'); 	// Comment out for live/release mode
 error_reporting(E_ALL);
